@@ -1,3 +1,13 @@
 @import '../../.cache/wal/colors-waybar.css';
 @import 'themes/nova-dark/notifications.css';
 @import 'themes/nova-dark/central_control.css';
+
+/* Override dopo gli import per forzare sfondo blur */
+.notification, .notification-window, .control-center {
+    background-color: rgba(20, 20, 20, 0.8); /* Semitrasparente */
+    backdrop-filter: blur(12px);
+    color: white;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
