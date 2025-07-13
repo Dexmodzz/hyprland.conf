@@ -158,10 +158,6 @@ Scroll up or down using the mouse on the media module in Waybar to skip to the n
 
 As additional bonuses, I added in:
 
-1. Ad-free Spotify and its theming based on the wallpaper you choose (Note: you might have to pass in `-enable-features=UseOzonePlatform -ozone-platform=wayland` if Spotify doesn't open).
-
-2. Improved font rendering so that all fonts look as crisp as possible :)
-
-If you loved this and want me to make something like this specifically for you, head on over to https://sane1090x.github.io/hyprstylish and make an order!
+1. Improved font rendering so that all fonts look as crisp as possible :)
 
 Thank you!
