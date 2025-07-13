@@ -20,7 +20,7 @@ Install the required programs with any AUR helper of your choice; here, yay is u
 yay -S --needed hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli alacritty brightnessctl dunst gtk-engine-murrine gtk-engines hyprlock matugen-bin nwg-look papirus-folders python-pywal16 spotx-git playerctl nerd-fonts-noto-sans-mono blueman grim thunar brave-git
 ```
 
-## 2. Run script
+## 2. Run Script
 
 A script titled `install.sh` is provided which will <b>install required fonts</b> and <b>backup
 your existing configuration</b> by copying conflicting folders to a different location
@@ -36,7 +36,7 @@ If you prefer manual installation, kindly copy only the folders of the apps you 
 using `cp -r ./.config/<chosen_folder> ~/.config` or drag and drop using your preferred GUI file
 manager.
 
-## 3. Configure high-performance mode
+## 3. Configure High-Performance Mode
 
 Enable the `power-profiles-daemon` using:
 
@@ -52,11 +52,11 @@ module from the bar and control it through the command line with:
 powerprofilesctl set performance
 ```
 
-## 4. Change wallpapers (and themes)
+## 4. Change Wallpapers (and themes)
 
 Add all your wallpapers to `~/Pictures/Wallpapers` (case-sensitive) and change the theme by pressing Super + T. If you want to change the wallpaper directory, open `~/.local/bin/walset` and change `WALL_DIR` to the path where you store wallpapers.
 
-## 5. Change GTK theme
+## 5. Change GTK Theme
 
 Usually, your GTK theme will be one that you've chosen specifically or the default. Run
 this to change it to Material colors:
@@ -154,7 +154,7 @@ Scroll up or down using the mouse on the media module in Waybar to skip to the n
 
 <br>
 
-# Final notes
+# Final Notes
 
 As additional bonuses, I added in:
 
