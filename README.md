@@ -5,7 +5,7 @@ system:
 
 ## 1. Install Dependencies
 
-first update the system
+First update the system
 
 
 ```
