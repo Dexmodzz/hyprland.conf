@@ -6,11 +6,13 @@ system:
 ## 1. Install dependencies
 
 first update the system
-...
+
+
+```
 sudo pacman -Syu
 sudo pacman -S pacman-contrib
 sudo pacman -S swaync
-...
+```
 
 Install the required programs with any AUR helper of your choice; here, yay is used.
 
