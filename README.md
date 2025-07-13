@@ -109,8 +109,12 @@ gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
     <td>Super + R</td>
   </tr>
   <tr>
-    <td>Open LibreWolf browser (if installed)</td>
+    <td>Open LibreWolf browser (if installed) or Your Default Browser You Have Set Up</td>
     <td>Super + B</td>
+  </tr>
+  <tr>
+  <td>Open your Default Browser You Have Set Up in private</td>
+    <td>Super + I</td>
   </tr>
   <tr>
     <td>Apply wallpaper</td>
