@@ -1,9 +1,9 @@
-# Hello, dear user!
+# Hello, Dear User!
 
 Given below is a list of a few steps to follow to ensure that the configuration works on your
 system:
 
-## 1. Install dependencies
+## 1. Install Dependencies
 
 first update the system
 
