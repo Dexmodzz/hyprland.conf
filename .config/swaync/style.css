@@ -11,3 +11,15 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+{
+    "notification-blocklist": [
+        {
+            "app-name": "Brave"
+        }
+    ],
+    "some-other-setting": true
+}
+
+
+
+
