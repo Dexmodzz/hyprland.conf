@@ -30,7 +30,7 @@
 
   "custom/launcher": {
     "format": "",
-    "on-click": "bash ~/.config/rofi/rofi-material.sh",
+    "on-click": "bash ~/.local/bin/menu.sh",
     "tooltip-format": "Launch your favorite apps"
   },
 
