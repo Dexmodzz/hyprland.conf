@@ -4,7 +4,7 @@
   "margin-top": 13,
   "modules-left": ["custom/launcher", "custom/media"],
   "modules-center": ["custom/notification", "hyprland/workspaces"],
-  "modules-right": ["custom/pacman", "pulseaudio", "battery", "network", "clock", "power-profiles-daemon"],
+  "modules-right": ["custom/pacman", "pulseaudio", "battery", "network", "clock", "power-profiles-daemon", "custom/power"],
   "height": 40,
 
   "custom/notification": {
@@ -143,7 +143,15 @@
       "performance": "󰠠",
       "balanced": "󰚀",
       "power-saver": "󰌪"
-    }
+      }
+    },
+
+"custom/power": {
+    "format": "", // puoi usare anche un'emoji o testo
+    "tooltip": "power menu",
+    "on-click": "~/.local/bin/powermenu.sh"
+
+
   },
 
   "hyprland/window": {

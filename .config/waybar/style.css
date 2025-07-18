@@ -76,6 +76,12 @@ window#waybar {
   margin: 0 0 0 12px;
 }
 
+#custom-power {
+color: @primary;
+background-color: @surface_container;
+padding: 0 15px 0 15px;
+margin: 0 0 0 12px;
+}
 
 #window.hidden {
     opacity: 0;
