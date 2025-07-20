@@ -1,79 +1,91 @@
 #!/usr/bin/env bash
 
-# Current Theme
+# === CONFIG ===
 main_dir="$HOME/.config/rofi"
 dir="$main_dir/power_option"
 theme='fullscreen'
 
-# CMDs
+# Uptime e hostname
 uptime="$(awk '{printf "%d hour, %d minutes\n", $1/3600, ($1%3600)/60}' /proc/uptime)"
 host=$(hostname)
 
-# Options
-shutdown=''  # U+F011, icona power (FontAwesome)
-reboot=''    # U+F021, icona reboot
-lock=''      # U+F023, icona lock
-suspend='⏾'   # icona sleep
-logout=''    # icona logout
+# Opzioni principali (icone FontAwesome o simili)
+shutdown=''   # Power off
+reboot=''     # Reboot
+lock=''       # Lock screen
+suspend='⏾'    # Suspend
+logout=''     # Logout
 
+# Opzioni conferma
+yes="Yes"
+no="No"
 
-# Rofi CMD
+# === FUNZIONI ===
+
+# Menu principale con rofi
 rofi_cmd() {
     rofi -dmenu \
         -p "Goodbye ${USER}" \
         -mesg "Uptime: $uptime" \
-        -theme ${dir}/${theme}.rasi
+        -theme "${dir}/${theme}.rasi"
 }
 
-# Confirmation CMD
+# Menu di conferma con rofi
 confirm_cmd() {
     rofi -dmenu \
         -p 'Confirmation' \
-        -mesg 'Are you Sure?' \
-        -theme ${main_dir}/rofi-confirm.rasi
+        -mesg 'Are you sure?' \
+        -theme "${main_dir}/rofi-confirm.rasi"
 }
 
-# Ask for confirmation
+# Chiedi conferma all'utente
 confirm_exit() {
-    echo -e "$yes\n$no" | confirm_cmd
+    echo -e "${yes}\n${no}" | confirm_cmd
 }
 
-# Pass variables to rofi dmenu
+# Mostra il menu principale
 run_rofi() {
-    echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
+    echo -e "${lock}\n${suspend}\n${logout}\n${reboot}\n${shutdown}" | rofi_cmd
 }
 
-# Execute Command
+# Esegue i comandi in base alla scelta
 run_cmd() {
     selected="$(confirm_exit)"
     if [[ "$selected" == "$yes" ]]; then
-        if [[ $1 == '--shutdown' ]]; then
-            "$HOME/.config/hypr/scripts/uptime.sh"
-            "$HOME/.config/hypr/scripts/notification.sh" logout
-            systemctl poweroff --now
-        elif [[ $1 == '--reboot' ]]; then
-            "$HOME/.config/hypr/scripts/uptime.sh"
-            "$HOME/.config/hypr/scripts/notification.sh" logout
-            systemctl reboot --now
-        elif [[ $1 == '--lock' ]]; then
-            hyprlock
-        elif [[ $1 == '--logout' ]]; then
-            "$HOME/.config/hypr/scripts/uptime.sh"
-            "$HOME/.config/hypr/scripts/notification.sh" logout
-            hyprctl dispatch exit 0
-        elif [[ $1 == '--suspend' ]]; then
-            "$HOME/.config/hypr/scripts/uptime.sh"
-            "$HOME/.config/hypr/scripts/notification.sh" logout
-            systemctl suspend
-        fi
+        case "$1" in
+            --shutdown)
+                "$HOME/.config/hypr/scripts/uptime.sh"
+                "$HOME/.config/hypr/scripts/notification.sh" logout
+                systemctl poweroff --now
+                ;;
+            --reboot)
+                "$HOME/.config/hypr/scripts/uptime.sh"
+                "$HOME/.config/hypr/scripts/notification.sh" logout
+                systemctl reboot --now
+                ;;
+            --lock)
+                hyprlock
+                ;;
+            --logout)
+                "$HOME/.config/hypr/scripts/uptime.sh"
+                "$HOME/.config/hypr/scripts/notification.sh" logout
+                hyprctl dispatch exit 0
+                ;;
+            --suspend)
+                "$HOME/.config/hypr/scripts/uptime.sh"
+                "$HOME/.config/hypr/scripts/notification.sh" logout
+                systemctl suspend
+                ;;
+        esac
     else
         exit 0
     fi
 }
 
-# Actions
+# === AVVIO ===
+
 chosen="$(run_rofi)"
-case ${chosen} in
+case "${chosen}" in
     $shutdown)
         run_cmd --shutdown
         ;;
