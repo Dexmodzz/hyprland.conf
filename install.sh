@@ -32,12 +32,18 @@ cp -a ./.config/* ~/.config/
 
 echo -e "\n\e[1;32mConfiguration files moved successfully!\e[0m\n"
 
-# Install the wallpaper changer
-echo -e "\n\e[1;34mInstalling wallpaper changer...\e[0m\n"
+# -- Install the wallpaper changer and other scripts
+echo -e "\n\e[1;34mInstalling wallpaper changer and scripts...\e[0m\n"
 
 mkdir -p "$HOME"/.local/bin
-cp ./.local/bin/walset "$HOME"/.local/bin
 
+cp ./.local/bin/menu.sh "$HOME"/.local/bin
+cp ./.local/bin/powermenu.sh "$HOME"/.local/bin
+cp ./.local/bin/set-wallpaper.sh "$HOME"/.local/bin
+
+chmod +x "$HOME"/.local/bin/{walset,menu.sh,powermenu.sh,set-wallpaper.sh}
+
+# -- Add to PATH if not already there
 if [[ "$SHELL" == */bash ]]; then
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
@@ -51,4 +57,3 @@ else
 fi
 
 echo -e "\n\e[1;32mInstallation complete!\e[0m\n"
-
