@@ -55,7 +55,8 @@ powerprofilesctl set performance
 
 ## 4. Change Wallpapers (and themes)
 
-Add all your wallpapers to `~/Pictures/Wallpapers` (case-sensitive) and change the theme by pressing Super + T. If you want to change the wallpaper directory, open `~/.local/bin/walset` and change `WALL_DIR` to the path where you store wallpapers.
+To apply wallpapers, just make sure you have image files in the folder ~/Pictures/Wallpapers (case-sensitive).If it doesn't exist, create it and place your wallpapers inside.
+Then, press Ctrl + T to open the rofi theme selector and apply a wallpaper.
 
 ## 5. Change GTK Theme
 
