@@ -30,9 +30,9 @@ echo -e "\n\e[1;34mUpdating the system and installing pacman-contrib...\e[0m\n"
 sudo pacman -Syu --noconfirm
 install_if_missing pacman-contrib yay
 
-# -- Install core packages
+# -- Install core packages (added kate here)
 echo -e "\n\e[1;34mChecking and installing core pacman packages...\e[0m\n"
-install_if_missing swaync sddm power-profiles-daemon
+install_if_missing swaync sddm power-profiles-daemon kate
 
 # -- Enable system services
 echo -e "\n\e[1;34mEnabling system services...\e[0m\n"
