@@ -12,12 +12,13 @@ First update the system
 sudo pacman -Syu
 sudo pacman -S pacman-contrib
 sudo pacman -S swaync
+sudo pacman -S yay
 ```
 
 Install the required programs with any AUR helper of your choice; here, yay is used.
 
 ```
-yay -S --needed hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli alacritty brightnessctl dunst gtk-engine-murrine gtk-engines hyprlock matugen-bin nwg-look papirus-folders python-pywal16 spotx-git playerctl nerd-fonts-noto-sans-mono blueman grim thunar brave-git swaybg nerd-fonts otf-font-awesome
+yay -S --needed hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli alacritty brightnessctl dunst gtk-engine-murrine gtk-engines hyprlock matugen-bin nwg-look papirus-folders python-pywal16 spotx-git playerctl nerd-fonts-noto-sans-mono blueman grim thunar brave-bin swaybg nerd-fonts otf-font-awesome
 ```
 
 ## 2. Run Script
