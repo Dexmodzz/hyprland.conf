@@ -3,62 +3,20 @@
 Given below is a list of a few steps to follow to ensure that the configuration works on your
 system:
 
-## 1. Install Dependencies
+## 1. Download or Clone
 
-First update the system
+- **Download ZIP**: Click the green `Code` button → `Download ZIP`, then extract it.
+- **Or clone using Git**
+- **cd hyprland.conf**
+- **sudo chmod +x install.sh**
+- **bash install.sh**
 
+## 2. Change Wallpapers (and themes)
 
-```
-sudo pacman -Syu
-sudo pacman -S pacman-contrib
-sudo pacman -S swaync
-sudo pacman -S yay
-```
-
-Install the required programs with any AUR helper of your choice; here, yay is used.
-
-```
-yay -S --needed hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli alacritty brightnessctl dunst gtk-engine-murrine gtk-engines hyprlock matugen-bin nwg-look papirus-folders python-pywal16 spotx-git playerctl nerd-fonts-noto-sans-mono blueman grim thunar brave-bin swaybg nerd-fonts otf-font-awesome
-```
-
-## 2. Run Script
-
-A script titled `install.sh` is provided which will <b>install required fonts</b> and <b>backup
-your existing configuration</b> by copying conflicting folders to a different location
-before overwriting them.
-
-Run it using:
-
-```
-bash ./install.sh
-```
-
-If you prefer manual installation, kindly copy only the folders of the apps you want to theme
-using `cp -r ./.config/<chosen_folder> ~/.config` or drag and drop using your preferred GUI file
-manager.
-
-## 3. Configure High-Performance Mode
-
-Enable the `power-profiles-daemon` using:
-
-```
-sudo systemctl enable --now power-profiles-daemon.service
-```
-
-This will allow you to choose between balanced, power-saver and performance modes using a button
-at the top-right of the bar to control power consumption. If unneccessary on a desktop, remove the
-module from the bar and control it through the command line with:
-
-```
-powerprofilesctl set performance
-```
-
-## 4. Change Wallpapers (and themes)
-
-To apply wallpapers, just make sure you have image files in the folder ~/Pictures/Wallpapers (case-sensitive).If it doesn't exist, create it and place your wallpapers inside.
+**To apply wallpapers**, just make sure you have image files in the folder ~/Pictures/Wallpapers.If it doesn't exist, create it and place your wallpapers inside.
 Then, press Ctrl + T to open the rofi theme selector and apply a wallpaper.
 
-## 5. Change GTK Theme
+## 3. Change GTK Theme
 
 Usually, your GTK theme will be one that you've chosen specifically or the default. Run
 this to change it to Material colors:
@@ -67,7 +25,7 @@ this to change it to Material colors:
 gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
 ```
 
-## 6. Keybinds
+## 4. Keybinds
 
 <table>
   <tr>
