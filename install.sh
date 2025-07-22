@@ -25,19 +25,25 @@ install_aur_if_missing() {
     done
 }
 
-# -- Update system and install pacman-contrib
-echo -e "\n\e[1;34mUpdating the system and installing pacman-contrib...\e[0m\n"
+# -- Update system and install pacman-contrib and yay
+echo -e "\n\e[1;34mUpdating the system and installing pacman-contrib and yay...\e[0m\n"
 sudo pacman -Syu --noconfirm
 install_if_missing pacman-contrib yay
 
-# -- Install core packages (added kate here)
+# -- Install core packages (including bluez, rfkill, libnotify for bluetoothctl and notify-send)
 echo -e "\n\e[1;34mChecking and installing core pacman packages...\e[0m\n"
-install_if_missing swaync sddm power-profiles-daemon kate
+install_if_missing swaync sddm power-profiles-daemon bluez rfkill libnotify kate
+
+# -- Install networking packages (WiFi/Ethernet management)
+echo -e "\n\e[1;34mChecking and installing networking packages...\e[0m\n"
+install_if_missing networkmanager network-manager-applet nm-connection-editor wireless_tools wpa_supplicant dialog
 
 # -- Enable system services
 echo -e "\n\e[1;34mEnabling system services...\e[0m\n"
 sudo systemctl enable sddm
 sudo systemctl enable --now power-profiles-daemon.service
+sudo systemctl enable --now bluetooth.service
+sudo systemctl enable --now NetworkManager.service
 powerprofilesctl set performance
 
 # -- Install AUR packages
