@@ -1,7 +1,6 @@
 # Hello, Dear User!
 
-Given below is a list of a few steps to follow to ensure that the configuration works on your
-system:
+This repository contains configuration files, themes, fonts, and scripts for a custom Linux environment (optimized for Hyprland and Wayland on Arch or derivative distributions).
 
 ## 1. Download or Clone
 
@@ -13,8 +12,8 @@ system:
 
 ## 2. Change Wallpapers (and themes)
 
-**To apply wallpapers**, just make sure you have image files in the folder ~/Pictures/Wallpapers.If it doesn't exist, create it and place your wallpapers inside.
-Then, press Ctrl + T to open the rofi theme selector and apply a wallpaper.
+**To apply wallpapers**, just make sure you have image files in the folder **~/Pictures/Wallpapers. If it doesn't exist, create it** and place your wallpapers inside.
+Then, **press Ctrl + T** to open the rofi theme selector and apply a wallpaper.
 
 ## 3. Change GTK Theme
 
@@ -69,11 +68,11 @@ gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
     <td>Super + R</td>
   </tr>
   <tr>
-    <td>Open BraveBrowser Or Your Default Browser You Have Set Up</td>
+    <td>Open Brave-Browser Or Your Default Browser You Have Set Up</td>
     <td>Super + B</td>
   </tr>
   <tr>
-  <td>Open BraveBrowser Or Your Default Browser You Have Set Up in Private</td>
+  <td>Open Brave-Browser Or Your Default Browser You Have Set Up in Private</td>
     <td>Super + I</td>
   </tr>
   <tr>
