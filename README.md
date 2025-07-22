@@ -6,7 +6,7 @@ system:
 ## 1. Download or Clone
 
 - **Download ZIP**: Click the green `Code` button → `Download ZIP`, then extract it.
-- **Or clone using Git**
+**Or clone using Git**
 - **cd hyprland.conf**
 - **sudo chmod +x install.sh**
 - **bash install.sh**
