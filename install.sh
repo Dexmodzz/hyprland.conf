@@ -2,21 +2,37 @@
 
 set -e
 
-# -- Update the system and install pacman-contrib
+# -- Define functions to avoid reinstalling packages
+install_if_missing() {
+    for pkg in "$@"; do
+        if pacman -Q "$pkg" &> /dev/null; then
+            echo -e "\e[1;32m✓ $pkg is already installed\e[0m"
+        else
+            echo -e "\e[1;33m→ Installing $pkg...\e[0m"
+            sudo pacman -S --noconfirm "$pkg"
+        fi
+    done
+}
+
+install_aur_if_missing() {
+    for pkg in "$@"; do
+        if pacman -Q "$pkg" &> /dev/null; then
+            echo -e "\e[1;32m✓ $pkg is already installed\e[0m"
+        else
+            echo -e "\e[1;33m→ Installing $pkg from AUR...\e[0m"
+            yay -S --noconfirm "$pkg"
+        fi
+    done
+}
+
+# -- Update system and install pacman-contrib
 echo -e "\n\e[1;34mUpdating the system and installing pacman-contrib...\e[0m\n"
 sudo pacman -Syu --noconfirm
-sudo pacman -S --noconfirm pacman-contrib
+install_if_missing pacman-contrib yay
 
-# -- Install yay (AUR helper)
-echo -e "\n\e[1;34mInstalling yay...\e[0m\n"
-sudo pacman -S --noconfirm yay
-
-# -- Install core packages from pacman
-echo -e "\n\e[1;34mInstalling core packages with pacman...\e[0m\n"
-sudo pacman -S --noconfirm \
-  swaync \
-  sddm \
-  power-profiles-daemon
+# -- Install core packages
+echo -e "\n\e[1;34mChecking and installing core pacman packages...\e[0m\n"
+install_if_missing swaync sddm power-profiles-daemon
 
 # -- Enable system services
 echo -e "\n\e[1;34mEnabling system services...\e[0m\n"
@@ -24,45 +40,16 @@ sudo systemctl enable sddm
 sudo systemctl enable --now power-profiles-daemon.service
 powerprofilesctl set performance
 
-# -- Install AUR packages using yay
-echo -e "\n\e[1;34mInstalling AUR packages with yay...\e[0m\n"
-yay -S --needed --noconfirm \
-  hyprland \
-  waybar \
-  kitty \
-  power-profiles-daemon \
-  hyprsunset \
-  hyprlock \
-  rofi-wayland \
-  papirus-icon-theme \
-  ttf-jetbrains-mono-nerd \
-  python-pywalfox \
-  adw-gtk-theme \
-  qt5ct \
-  swww \
-  kvantum \
-  kvantum-qt5 \
-  pywal-spicetify \
-  spicetify-cli \
-  alacritty \
-  brightnessctl \
-  dunst \
-  gtk-engine-murrine \
-  gtk-engines \
-  matugen-bin \
-  nwg-look \
-  papirus-folders \
-  python-pywal16 \
-  spotx-git \
-  playerctl \
-  nerd-fonts-noto-sans-mono \
-  blueman \
-  grim \
-  thunar \
-  brave-bin \
-  swaybg \
-  nerd-fonts \
-  otf-font-awesome
+# -- Install AUR packages
+echo -e "\n\e[1;34mChecking and installing AUR packages...\e[0m\n"
+install_aur_if_missing \
+  hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock \
+  rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox \
+  adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli \
+  alacritty brightnessctl dunst gtk-engine-murrine gtk-engines matugen-bin \
+  nwg-look papirus-folders python-pywal16 spotx-git playerctl \
+  nerd-fonts-noto-sans-mono blueman grim thunar brave-bin swaybg \
+  nerd-fonts otf-font-awesome
 
 # -- Install fonts
 echo -e "\n\e[1;34mInstalling fonts...\e[0m\n"
@@ -103,9 +90,9 @@ cp ./.local/bin/menu.sh "$HOME"/.local/bin
 cp ./.local/bin/powermenu.sh "$HOME"/.local/bin
 cp ./.local/bin/set-wallpaper.sh "$HOME"/.local/bin
 
-chmod +x "$HOME"/.local/bin/{walset,menu.sh,powermenu.sh,set-wallpaper.sh}
+chmod +x "$HOME"/.local/bin/{menu.sh,powermenu.sh,set-wallpaper.sh}
 
-# -- Add ~/.local/bin to PATH if not already added
+# -- Add ~/.local/bin to PATH if not already present
 if [[ "$SHELL" == */bash ]]; then
     grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
