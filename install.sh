@@ -2,7 +2,7 @@
 
 set -e
 
-# -- Define functions to avoid reinstalling packages
+# Funzione per installare pacchetti da pacman se mancanti
 install_if_missing() {
     for pkg in "$@"; do
         if pacman -Q "$pkg" &> /dev/null; then
@@ -14,6 +14,7 @@ install_if_missing() {
     done
 }
 
+# Funzione per installare pacchetti da AUR se mancanti
 install_aur_if_missing() {
     for pkg in "$@"; do
         if pacman -Q "$pkg" &> /dev/null; then
@@ -25,20 +26,16 @@ install_aur_if_missing() {
     done
 }
 
-# -- Update system and install pacman-contrib and yay
-echo -e "\n\e[1;34mUpdating the system and installing pacman-contrib and yay...\e[0m\n"
+echo -e "\n\e[1;34mUpdating system and installing pacman-contrib and yay...\e[0m\n"
 sudo pacman -Syu --noconfirm
 install_if_missing pacman-contrib yay
 
-# -- Install core packages (including bluez, rfkill, libnotify for bluetoothctl and notify-send)
-echo -e "\n\e[1;34mChecking and installing core pacman packages...\e[0m\n"
+echo -e "\n\e[1;34mInstalling core pacman packages...\e[0m\n"
 install_if_missing swaync sddm power-profiles-daemon bluez rfkill libnotify kate
 
-# -- Install networking packages (WiFi/Ethernet management)
-echo -e "\n\e[1;34mChecking and installing networking packages...\e[0m\n"
-install_if_missing networkmanager network-manager-applet nm-connection-editor wireless_tools wpa_supplicant dialog
+echo -e "\n\e[1;34mInstalling networking packages...\e[0m\n"
+install_if_missing networkmanager network-manager-applet libappindicator-gtk3 papirus-icon-theme nm-connection-editor wireless_tools wpa_supplicant dialog
 
-# -- Enable system services
 echo -e "\n\e[1;34mEnabling system services...\e[0m\n"
 sudo systemctl enable sddm
 sudo systemctl enable --now power-profiles-daemon.service
@@ -46,31 +43,26 @@ sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now NetworkManager.service
 powerprofilesctl set performance
 
-# -- Install AUR packages
-echo -e "\n\e[1;34mChecking and installing AUR packages...\e[0m\n"
+echo -e "\n\e[1;34mInstalling AUR packages...\e[0m\n"
 install_aur_if_missing \
   hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock \
-  rofi-wayland papirus-icon-theme ttf-jetbrains-mono-nerd python-pywalfox \
+  rofi-wayland ttf-jetbrains-mono-nerd python-pywalfox \
   adw-gtk-theme qt5ct swww kvantum kvantum-qt5 pywal-spicetify spicetify-cli \
   alacritty brightnessctl dunst gtk-engine-murrine gtk-engines matugen-bin \
   nwg-look papirus-folders python-pywal16 spotx-git playerctl \
   nerd-fonts-noto-sans-mono blueman grim thunar brave-bin swaybg \
   nerd-fonts otf-font-awesome
 
-# -- Install fonts
 echo -e "\n\e[1;34mInstalling fonts...\e[0m\n"
 font_dir="$HOME/.local/share/fonts/ttf"
 mkdir -p "$font_dir"
 cp -r ./fonts/ttf/* "$font_dir"
 fc-cache -fv
 
-# -- Backup existing configuration
 echo -e "\n\e[1;34mBacking up existing configuration...\e[0m\n"
 bash ./backup_config.sh
 
-# -- Copy configuration files
 echo -e "\n\e[1;34mCopying configuration files...\e[0m\n"
-
 mkdir -p ~/.icons
 cp -a .icons/Simp1e-Dark ~/.icons/
 
@@ -87,18 +79,16 @@ cp -a ./.config/* ~/.config/
 
 echo -e "\n\e[1;32mConfiguration files copied successfully!\e[0m\n"
 
-# -- Install custom scripts
 echo -e "\n\e[1;34mInstalling custom scripts...\e[0m\n"
+mkdir -p "$HOME/.local/bin"
 
-mkdir -p "$HOME"/.local/bin
+cp ./.local/bin/menu.sh "$HOME/.local/bin"
+cp ./.local/bin/powermenu.sh "$HOME/.local/bin"
+cp ./.local/bin/set-wallpaper.sh "$HOME/.local/bin"
 
-cp ./.local/bin/menu.sh "$HOME"/.local/bin
-cp ./.local/bin/powermenu.sh "$HOME"/.local/bin
-cp ./.local/bin/set-wallpaper.sh "$HOME"/.local/bin
+chmod +x "$HOME/.local/bin/"{menu.sh,powermenu.sh,set-wallpaper.sh}
 
-chmod +x "$HOME"/.local/bin/{menu.sh,powermenu.sh,set-wallpaper.sh}
-
-# -- Add ~/.local/bin to PATH if not already present
+# Add ~/.local/bin to PATH if not already present
 if [[ "$SHELL" == */bash ]]; then
     grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
