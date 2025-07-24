@@ -2,9 +2,9 @@
   "layer": "top",
   "position": "top",
   "margin-top": 13,
-  "modules-left": ["custom/launcher", "custom/media"],
+  "modules-left": ["custom/launcher", "power-profiles-daemon", "custom/media"],
   "modules-center": ["custom/notification", "hyprland/workspaces"],
-  "modules-right": ["custom/pacman", "pulseaudio", "battery", "network", "clock", "power-profiles-daemon", "custom/power"],
+  "modules-right": ["custom/pacman", "pulseaudio", "backlight", "battery", "tray", "clock", "custom/power"],
   "height": 40,
 
   "custom/notification": {
@@ -57,10 +57,18 @@
   },
 
   "battery": {
-    "format": "{icon}  {capacity}%",
-    "format-charging": "󰂄  {capacity}%",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-    "tooltip-format": "Battery is at {capacity}%" 
+    "states": {
+      // "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-plugged": "  {capacity}%",
+    "format-alt": "{icon}  {time}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": [" ", " ", " ", " ", " "]
   },
 
   "clock": {
@@ -70,33 +78,40 @@
   },
 
   "pulseaudio": {
+    // "scroll-step": 1, // %, can be a float
     "format": "{icon}  {volume}%",
-    "format-bluetooth": "󰂱 {volume}%",
-    "format-muted": "󰖁",
-    "scroll-step": 1,
-    "on-click": "pavucontrol",
-    "ignored-sinks": ["Easy Effects Sink"],
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
     "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "󰋎",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["󰖀", "󰕾"]
+      "headphone": " ",
+      "hands-free": " ",
+      "headset": " ",
+      "phone": " ",
+      "portable": " ",
+      "car": " ",
+      "default": ["", "", ""]
     },
-    "tooltip-format": "Volume: {volume}%"
+    "on-click": "pavucontrol"
   },
 
   "network": {
-    "interface": "wlan0",
-    "format": "{ifname}",
-    "format-wifi": "{icon}  {essid}",
-    "format-ethernet": "󰈀  {ipaddr}/{cidr}",
-    "format-disconnected": "󰤭  Disconnected",
-    "max-length": 50,
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-    "tooltip-format": "Connected to {essid}"
+	"format": "{ifname}",
+	"format-wifi": "{icon}",
+	"format-ethernet": "󰌘",
+	"format-disconnected": "󰌙",
+	"tooltip-format": "{ipaddr}  {bandwidthUpBits}  {bandwidthDownBits}",
+	"format-linked": "󰈁 {ifname} (No IP)",
+	"tooltip-format-wifi": "{essid} {icon} {signalStrength}%",
+	"tooltip-format-ethernet": "{ifname} 󰌘",
+	"tooltip-format-disconnected": "󰌙 Disconnected",
+	"max-length": 30,
+	"format-icons": [
+		"󰤯", "󰤟", "󰤢", "󰤥", "󰤨"
+	],
+    "on-click": "alacritty -e ~/.local/bin/wifi-menu.sh",
   },
 
   "hyprland/workspaces": {
@@ -121,17 +136,34 @@
   },
 
   "backlight": {
-    "device": "intel_backlight",
-    "format": "{icon}   {percent}%",
-    "format-icons": ["󰃞", "󰃟", "󰃠"]
+    "format": "{icon} {percent}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "scroll-step": 1
   },
 
-  "custom/weather": {
-    "exec": "${HOME}/.config/waybar/scripts/get_weather.sh Bangalore+India",
-    "return-type": "json",
-    "format": "{}",
-    "tooltip": true,
-    "interval": 3600
+  "bluetooth": {
+    "format": " {status}",
+    "format-disabled": "",
+    "format-off": "",
+    "interval": 30,
+    "on-click": "blueman-manager",
+    "format-no-controller": ""
   },
 
   "power-profiles-daemon": {
@@ -151,7 +183,10 @@
     "tooltip": "power menu",
     "on-click": "~/.local/bin/powermenu.sh"
 
-
+  },
+"tray": {
+    "icon-size": 21,
+    "spacing": 10
   },
 
   "hyprland/window": {
@@ -160,7 +195,7 @@
     "icon": true,
     "icon-size": 18
 },
-  
+
   "cpu": {
     "interval": 10,
     "format": "    {}%",
