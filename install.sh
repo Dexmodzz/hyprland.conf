@@ -2,7 +2,7 @@
 
 set -e
 
-# Funzione per installare pacchetti da pacman se mancanti
+# Function to install pacman packages if missing
 install_if_missing() {
     for pkg in "$@"; do
         if pacman -Q "$pkg" &> /dev/null; then
@@ -14,7 +14,7 @@ install_if_missing() {
     done
 }
 
-# Funzione per installare pacchetti da AUR se mancanti
+# Function to install AUR packages if missing
 install_aur_if_missing() {
     for pkg in "$@"; do
         if pacman -Q "$pkg" &> /dev/null; then
@@ -62,6 +62,17 @@ fc-cache -fv
 echo -e "\n\e[1;34mBacking up existing configuration...\e[0m\n"
 bash ./backup_config.sh
 
+echo -e "\n\e[1;34mBacking up Thunar configuration...\e[0m\n"
+mkdir -p ./thunar-backup
+
+# Backup Thunar config
+cp -r ~/.config/Thunar ./thunar-backup/
+
+# Backup GTK bookmarks used by Thunar
+cp ~/.config/gtk-3.0/bookmarks ./thunar-backup/
+
+echo -e "\e[1;32m✓ Thunar configuration and bookmarks backed up to ./thunar-backup\e[0m"
+
 echo -e "\n\e[1;34mCopying configuration files...\e[0m\n"
 mkdir -p ~/.icons
 cp -a .icons/Simp1e-Dark ~/.icons/
@@ -77,7 +88,15 @@ cp -a ./$themes_dir/* ~/$themes_dir
 cp .gtkrc-2.0 ~/.gtkrc-2.0
 cp -a ./.config/* ~/.config/
 
-echo -e "\n\e[1;32mConfiguration files copied successfully!\e[0m\n"
+# Restore Thunar config
+echo -e "\n\e[1;34mRestoring Thunar configuration...\e[0m\n"
+mkdir -p ~/.config/Thunar
+cp -r ./thunar-backup/Thunar/* ~/.config/Thunar/
+
+mkdir -p ~/.config/gtk-3.0
+cp ./thunar-backup/bookmarks ~/.config/gtk-3.0/
+
+echo -e "\e[1;32m✓ Thunar configuration restored!\e[0m"
 
 echo -e "\n\e[1;34mInstalling custom scripts...\e[0m\n"
 mkdir -p "$HOME/.local/bin"
