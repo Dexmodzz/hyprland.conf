@@ -1,0 +1,72 @@
+* {
+  bg-color: rgba(40, 40, 40, 0.9);
+  fg-color: #ffffff;  // Bianco per testo
+  spacing: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  font: "Inter 12";
+  text-color: var(fg-color);
+}
+
+window {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(bg-color);
+  location: north;
+  anchor: north;
+  width: 512px;
+  y-offset: 8px;  // distanza dal bordo alto
+  children: [ inputbar, listview ];
+}
+
+inputbar {
+  spacing: 8px;
+  children: [ textbox-prompt, entry ];
+}
+
+textbox-prompt {
+  font: "Symbols Nerd Font Mono 12";
+  content: "";
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+  width: 24px;
+  expand: false;
+}
+
+entry {
+  cursor-width: 1px;
+}
+
+listview {
+  spacing: 4px;
+  margin: 16px 0px 0px 0px;
+  fixed-height: false;
+  dynamic: true;
+  cycle: false;
+  lines: 5;
+  children: [ element ];
+}
+
+element {
+  spacing: 8px;
+  text-color: #ffffff;  // Bianco per i nomi delle app
+  children: [ element-icon, element-text ];
+}
+
+element selected {
+  background-color: #afc6ff;  // Sfondo selezione azzurro
+  text-color: #000000;        // Testo nero selezionato
+}
+
+element-icon {
+  size: 24px;
+}
+
+element-text {
+  vertical-align: 0.5;
+  text-color: inherit;
+  highlight: none;
+}
