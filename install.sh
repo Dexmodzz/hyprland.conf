@@ -32,26 +32,59 @@ echo -e "\n\e[1;34m🔄 Updating system and installing pacman-contrib and yay...
 sudo pacman -Syu --noconfirm
 install_if_missing pacman-contrib yay
 
-# === Core packages ===
+# === KDE Plasma 6 Minimal ===
+
+echo -e "\n\e[1;34m🖥️ Installing minimal KDE Plasma 6 environment...\e[0m\n"
+install_if_missing plasma-desktop konsole dolphin ark sddm \
+    systemsettings plasma-pa kde-gtk-config xdg-desktop-portal-kde
+
+# === Core Packages ===
 
 echo -e "\n\e[1;34m📦 Installing core packages...\e[0m\n"
-install_if_missing swaync sddm power-profiles-daemon bluez rfkill libnotify kate
+install_if_missing swaync power-profiles-daemon bluez rfkill libnotify kate
+
+# === Network Packages ===
 
 echo -e "\n\e[1;34m🌐 Installing network packages...\e[0m\n"
-install_if_missing networkmanager network-manager-applet libappindicator-gtk3 papirus-icon-theme nm-connection-editor wireless_tools wpa_supplicant dialog
+install_if_missing networkmanager network-manager-applet libappindicator-gtk3 papirus-icon-theme \
+    nm-connection-editor wireless_tools wpa_supplicant dialog
 
-# === Enable system services ===
+# === Enable System Services ===
 
 echo -e "\n\e[1;34m⚙️ Enabling system services...\e[0m\n"
-sudo systemctl enable sddm
+sudo systemctl enable --now sddm
 sudo systemctl enable --now power-profiles-daemon.service
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now NetworkManager.service
 powerprofilesctl set performance
 
-# === AUR packages ===
+# === Hyprland Default Session for SDDM ===
 
-echo -e "\n\e[1;34m🌐 Installing AUR packages...\e[0m\n"
+echo -e "\n\e[1;34m🧠 Creating Hyprland session for SDDM...\e[0m\n"
+sudo mkdir -p /usr/share/wayland-sessions
+sudo tee /usr/share/wayland-sessions/hyprland.desktop >/dev/null <<EOF
+[Desktop Entry]
+Name=Hyprland
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec=Hyprland
+Type=Application
+DesktopNames=Hyprland
+EOF
+
+echo -e "\n\e[1;34m🔧 Setting Hyprland as default session in SDDM...\e[0m\n"
+sudo mkdir -p /etc/sddm.conf.d
+sudo tee /etc/sddm.conf.d/default.conf >/dev/null <<EOF
+[Autologin]
+User=$USER
+Session=hyprland.desktop
+
+[General]
+Session=hyprland.desktop
+EOF
+
+# === AUR Packages ===
+
+echo -e "\n\e[1;34m📦 Installing AUR packages...\e[0m\n"
 install_aur_if_missing \
     hyprland waybar kitty power-profiles-daemon hyprsunset hyprlock \
     rofi-wayland ttf-jetbrains-mono-nerd python-pywalfox \
@@ -69,17 +102,15 @@ mkdir -p "$font_dir"
 cp -r ./fonts/ttf/* "$font_dir"
 fc-cache -fv
 
-# === Backup existing config ===
+# === Backup Configuration ===
 
 echo -e "\n\e[1;34m💾 Backing up existing configuration...\e[0m\n"
 bash ./backup_config.sh
 
-# Backup Thunar and GTK bookmarks
-echo -e "\n\e[1;34m💾 Backing up Thunar configuration...\e[0m\n"
+# Thunar and GTK bookmarks
 mkdir -p ./thunar-backup
 cp -r ~/.config/Thunar ./thunar-backup/ 2>/dev/null || true
 cp ~/.config/gtk-3.0/bookmarks ./thunar-backup/ 2>/dev/null || true
-echo -e "\e[1;32m✓ Thunar config saved in ./thunar-backup\e[0m"
 
 # === Copy Config Files ===
 
@@ -97,39 +128,34 @@ themes_dir=".themes"
 mkdir -p ~/$themes_dir
 cp -a ./$themes_dir/* ~/$themes_dir
 
-# GTK 2.0
+# GTK 2.0 config
 cp .gtkrc-2.0 ~/.gtkrc-2.0
 
-# Overwrite GTK configs (gtk-3.0 / gtk-4.0)
-echo -e "\n\e[1;34m💣 Overwriting GTK configuration...\e[0m"
+# GTK 3.0 / 4.0 config
 rm -rf ~/.config/gtk-3.0 ~/.config/gtk-4.0
 cp -r ./.config/gtk-3.0 ~/.config/
 cp -r ./.config/gtk-4.0 ~/.config/
-echo -e "\e[1;32m✓ GTK 3.0 and 4.0 copied successfully\e[0m"
 
-# Copy other config files (Hyprland, etc.)
+# Other configs
 cp -a ./.config/* ~/.config/
 
 # Restore Thunar config
-echo -e "\n\e[1;34m📂 Restoring Thunar configuration...\e[0m\n"
 mkdir -p ~/.config/Thunar
 cp -r ./thunar-backup/Thunar/* ~/.config/Thunar/ 2>/dev/null || true
 mkdir -p ~/.config/gtk-3.0
 cp ./thunar-backup/bookmarks ~/.config/gtk-3.0/ 2>/dev/null || true
-echo -e "\e[1;32m✓ Thunar configuration restored\e[0m"
 
-# === Custom scripts ===
+# === Custom Scripts ===
 
 echo -e "\n\e[1;34m⚙️ Installing custom scripts...\e[0m\n"
 mkdir -p "$HOME/.local/bin"
-
 cp ./.local/bin/menu.sh "$HOME/.local/bin"
 cp ./.local/bin/powermenu.sh "$HOME/.local/bin"
 cp ./.local/bin/set-wallpaper.sh "$HOME/.local/bin"
-
 chmod +x "$HOME/.local/bin/"{menu.sh,powermenu.sh,set-wallpaper.sh}
 
-# Add ~/.local/bin to PATH if missing
+# === Add ~/.local/bin to PATH ===
+
 if [[ "$SHELL" == */bash ]]; then
     grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
@@ -142,4 +168,4 @@ else
     echo "⚠️ Unknown shell. Please add ~/.local/bin to PATH manually."
 fi
 
-echo -e "\n\e[1;32m🎉 Installation complete!\e[0m\n"
+echo -e "\n\e[1;32m🎉 Installation complete! Hyprland will start by default via SDDM.\e[0m\n"
